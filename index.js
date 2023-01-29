@@ -21,10 +21,8 @@ const run = async () => {
         const db = client.db("Job-Task");
         const userCollection = db.collection("task-1");
 
-        app.post("/get-data", async (req, res) => {
-            const user = req.body;
+        app.get("/get-data", async (req, res) => {
             const result = await userCollection.findOne({});
-
             res.send(result);
         });
 
@@ -35,10 +33,10 @@ const run = async () => {
             res.send(result);
         });
 
-        app.post("/data-update", async (req, res) => {
-            const { name } = req.body;
+        app.patch("/data-update/:id", async (req, res) => {
+            const { id } = req.params
             const updatedData = req.body
-            const result = await userCollection.findOneAndUpdate({ name }, updatedData);
+            const result = await userCollection.findOneAndUpdate({ _id: ObjectId(id) }, { $set: { ...updatedData } });
 
             res.send(result);
         });
