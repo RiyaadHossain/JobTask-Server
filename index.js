@@ -18,13 +18,27 @@ const client = new MongoClient(uri, {
 
 const run = async () => {
     try {
-        const db = client.db("Elite-Recruit");
-        const userCollection = db.collection("users");
+        const db = client.db("Job-Task");
+        const userCollection = db.collection("task-1");
 
-        app.post("/user", async (req, res) => {
+        app.post("/get-data", async (req, res) => {
             const user = req.body;
+            const result = await userCollection.findOne({});
 
+            res.send(result);
+        });
+
+        app.post("/data-input", async (req, res) => {
+            const user = req.body;
             const result = await userCollection.insertOne(user);
+
+            res.send(result);
+        });
+
+        app.post("/data-update", async (req, res) => {
+            const { name } = req.body;
+            const updatedData = req.body
+            const result = await userCollection.findOneAndUpdate({ name }, updatedData);
 
             res.send(result);
         });
